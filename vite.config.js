@@ -13,8 +13,16 @@ export default defineConfig({
     sourcemap: false,
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ["react", "react-dom", "recharts"],
+        manualChunks: (id) => {
+          if (id.includes("node_modules")) {
+            if (id.includes("react") || id.includes("react-dom")) {
+              return "react-vendor";
+            }
+            if (id.includes("recharts")) {
+              return "recharts-vendor";
+            }
+            return "vendor";
+          }
         },
       },
     },
